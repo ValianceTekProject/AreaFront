@@ -2,18 +2,18 @@
 
 import { useEffect, useState } from "react";
 import AddItemForm from "@/components/Item_form";
-import TodoItem from "@/components/todo_item";
+import WishlistItem from "@/components/wishlist_item";
 
-export default function TodoPage() {
+export default function WishlistPage() {
   const [items, setItems] = useState([]);
 
   const loadItems = async () => {
-    const res = await fetch("../api/todo");
+    const res = await fetch("../api/wishlist");
     setItems(await res.json());
   };
 
   const addItem = async (data) => {
-    await fetch("../api/todo", {
+    await fetch("../api/wishlist", {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -21,17 +21,9 @@ export default function TodoPage() {
   };
 
   const deleteItem = async (id) => {
-    await fetch("../api/todo", {
+    await fetch("../api/wishlist", {
       method: "DELETE",
       body: JSON.stringify({ id }),
-    });
-    loadItems();
-  };
-
-  const toggleDone = async (id, done) => {
-    await fetch("../api/todo", {
-      method: "PATCH",
-      body: JSON.stringify({ id, done: !done }),
     });
     loadItems();
   };
@@ -42,18 +34,13 @@ export default function TodoPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold text-center">Ma To-Do List</h1>
+      <h1 className="text-3xl font-bold text-center">Ma Wishlist</h1>
 
       <AddItemForm onAdd={addItem} />
 
       <div className="space-y-4">
         {items.map((item) => (
-          <TodoItem
-            key={item.id}
-            item={item}
-            onDelete={deleteItem}
-            onToggle={toggleDone}
-          />
+          <WishlistItem key={item.id} item={item} onDelete={deleteItem} />
         ))}
       </div>
     </div>
