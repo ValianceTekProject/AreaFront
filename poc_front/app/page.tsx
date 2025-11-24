@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import AddItemForm from "@/components/Item_form";
 import TodoItem from "@/components/todo_item";
+import Meteo from "./meteo";
 
 export default function TodoPage() {
   const [items, setItems] = useState([]);
+    const [bgClass, setBgClass] = useState("bg-gray-200");
 
   const loadItems = async () => {
     const res = await fetch("../api/todo");
@@ -41,20 +43,23 @@ export default function TodoPage() {
   }, []);
 
   return (
-    <div className="p-6 max-w-2xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold text-center">Ma To-Do List</h1>
+    <div className={`min-h-screen ${bgClass} bg-cover bg-center`}>
+      <Meteo onBackgroundChange={setBgClass} />
+      <div className="p-6 max-w-2xl mx-auto space-y-6">
+        <h1 className="text-3xl font-bold text-center text-white">Ma To-Do List</h1>
 
-      <AddItemForm onAdd={addItem} />
+        <AddItemForm onAdd={addItem} />
 
-      <div className="space-y-4">
-        {items.map((item) => (
-          <TodoItem
+        <div className="space-y-4">
+          {items.map((item) => (
+            <TodoItem
             key={item.id}
             item={item}
             onDelete={deleteItem}
             onToggle={toggleDone}
-          />
-        ))}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -21,6 +21,7 @@ export default function AddItemForm({ onAdd }) {
         required
         onChange={(e) => setTitle(e.target.value)}
         fullWidth
+        className="bg-white rounded-md"
       />
       <Button variant="contained" type="submit">
         Ajouter
