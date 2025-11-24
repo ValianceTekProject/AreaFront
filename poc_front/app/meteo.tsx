@@ -35,5 +35,5 @@ export default function Meteo({ onBackgroundChange }) {
     onBackgroundChange(bg);
   }, [data, onBackgroundChange]);
 
-  return null; // Ne rend plus rien !
+  return null;
 }

@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import AddItemForm from "@/components/Item_form";
-import TodoItem from "@/components/todo_item";
+import TodoColumn from "@/components/TodoColumn";
 import Meteo from "./meteo";
 
 export default function TodoPage() {
   const [items, setItems] = useState([]);
-    const [bgClass, setBgClass] = useState("bg-gray-200");
+  const [bgClass, setBgClass] = useState("bg-gray-200");
 
   const loadItems = async () => {
     const res = await fetch("../api/todo");
@@ -42,23 +42,29 @@ export default function TodoPage() {
     loadItems();
   }, []);
 
+  const todoItems = items.filter((item) => !item.done);
+  const doneItems = items.filter((item) => item.done);
+
   return (
     <div className={`min-h-screen ${bgClass} bg-cover bg-center`}>
       <Meteo onBackgroundChange={setBgClass} />
-      <div className="p-6 max-w-2xl mx-auto space-y-6">
+      <div className="p-6 max-w-5xl mx-auto space-y-6">
         <h1 className="text-3xl font-bold text-center text-white">Ma To-Do List</h1>
-
         <AddItemForm onAdd={addItem} />
 
-        <div className="space-y-4">
-          {items.map((item) => (
-            <TodoItem
-            key={item.id}
-            item={item}
+        <div className="grid grid-cols-2 gap-6 mt-6">
+          <TodoColumn
+            title="À faire"
+            items={todoItems}
             onDelete={deleteItem}
             onToggle={toggleDone}
-            />
-          ))}
+          />
+          <TodoColumn
+            title="Complété"
+            items={doneItems}
+            onDelete={deleteItem}
+            onToggle={toggleDone}
+          />
         </div>
       </div>
     </div>
