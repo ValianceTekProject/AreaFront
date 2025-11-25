@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardActions, Button, Checkbox } from "@mui/material";
 
-export default function TodoItem({ item, onDelete, onToggle }) {
+export default function TodoWishlistItem({ item, onDelete, onToggle }) {
   return (
     <Card className="shadow-md flex items-center justify-between">
       <CardContent className="flex items-center gap-3">
