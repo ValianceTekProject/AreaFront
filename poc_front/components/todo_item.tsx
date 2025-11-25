@@ -7,15 +7,15 @@ export default function TodoItem({ item, onDelete, onToggle }) {
     <Card className="shadow-md flex items-center justify-between">
       <CardContent className="flex items-center gap-3">
         <Checkbox
-          checked={item.done}
-          onChange={() => onToggle(item.id, item.done)}
+          checked={item.Completed}
+          onChange={() => onToggle(item.Item, item.Completed)}
         />
-        <span className={item.done ? "line-through text-gray-400" : ""}>
-          {item.title}
+        <span className={item.Completed ? "line-through text-gray-400" : ""}>
+          {item.Item}
         </span>
       </CardContent>
       <CardActions>
-        <Button color="error" onClick={() => onDelete(item.id)}>
+        <Button color="error" onClick={() => onDelete(item.Item)}>
           Supprimer
         </Button>
       </CardActions>

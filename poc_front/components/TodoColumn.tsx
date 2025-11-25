@@ -9,7 +9,7 @@ export default function TodoColumn({ title, items, onDelete, onToggle }) {
       <div className="space-y-4">
         {items.map((item) => (
           <TodoItem
-            key={item.id}
+            key={item.Id}
             item={item}
             onDelete={onDelete}
             onToggle={onToggle}

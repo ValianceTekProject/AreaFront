@@ -9,7 +9,7 @@ export default function AddItemForm({ onAdd }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim()) return;
-    onAdd({ title });
+    onAdd({ Item: title, Completed: false });
     setTitle("");
   };
 

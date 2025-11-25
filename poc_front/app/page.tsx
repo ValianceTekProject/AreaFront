@@ -9,41 +9,47 @@ export default function TodoPage() {
   const [items, setItems] = useState([]);
   const [bgClass, setBgClass] = useState("bg-gray-200");
 
+  const API_URL = "/api/todo";
+
   const loadItems = async () => {
-    const res = await fetch("../api/todo");
+    const res = await fetch(API_URL);
     setItems(await res.json());
   };
 
   const addItem = async (data) => {
-    await fetch("../api/todo", {
+    await fetch(API_URL, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
     loadItems();
   };
 
-  const deleteItem = async (id) => {
-    await fetch("../api/todo", {
+  const deleteItem = async (Item) => {
+    await fetch(API_URL, {
       method: "DELETE",
-      body: JSON.stringify({ id }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ Item }),
     });
     loadItems();
   };
 
-  const toggleDone = async (id, done) => {
-    await fetch("../api/todo", {
-      method: "PATCH",
-      body: JSON.stringify({ id, done: !done }),
-    });
-    loadItems();
-  };
+
+  const toggleDone = async (Item, Completed) => {
+  await fetch(API_URL, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ Item, Completed: !Completed }),
+  });
+  loadItems();
+};
 
   useEffect(() => {
     loadItems();
   }, []);
 
-  const todoItems = items.filter((item) => !item.done);
-  const doneItems = items.filter((item) => item.done);
+  const todoItems = items.filter((item) => !item.Completed);
+  const doneItems = items.filter((item) => item.Completed);
 
   return (
     <div className={`min-h-screen ${bgClass} bg-cover bg-center`}>
