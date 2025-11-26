@@ -2,13 +2,27 @@
 
 import { useEffect, useState } from "react";
 
-export default function Meteo({ onBackgroundChange }) {
-  const [data, setData] = useState(null);
+type MeteoCurrent = {
+  snowfall: number;
+  rain: number;
+  cloud_cover: number;
+};
+
+type MeteoResponse = {
+  current: MeteoCurrent;
+};
+
+export default function Meteo({
+  onBackgroundChange,
+}: {
+  onBackgroundChange: (color: string) => void;
+}) {
+  const [data, setData] = useState<MeteoResponse | null>(null);
 
   useEffect(() => {
     fetch("/api/meteo")
       .then((res) => res.json())
-      .then((d) => {
+      .then((d: MeteoResponse) => {
         setData(d);
       });
   }, []);
@@ -30,7 +44,8 @@ export default function Meteo({ onBackgroundChange }) {
     else if (data.current.cloud_cover > 30)
       bg = "bg-[url('/cloudy.png')] bg-cover bg-center";
 
-    else bg = "bg-[url('/sun.png')] bg-cover bg-center";
+    else
+      bg = "bg-[url('/sun.png')] bg-cover bg-center";
 
     onBackgroundChange(bg);
   }, [data, onBackgroundChange]);

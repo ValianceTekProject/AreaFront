@@ -3,12 +3,22 @@
 import { TextField, Button } from "@mui/material";
 import { useState } from "react";
 
-export default function AddItemForm({ onAdd }) {
-  const [title, setTitle] = useState("");
+export type AddItemPayload = {
+  Item: string;
+  Completed: boolean;
+};
 
-  const handleSubmit = (e) => {
+export default function AddItemForm({
+  onAdd,
+}: {
+  onAdd: (item: AddItemPayload) => void;
+}) {
+  const [title, setTitle] = useState<string>("");
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title.trim()) return;
+
     onAdd({ Item: title, Completed: false });
     setTitle("");
   };
