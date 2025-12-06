@@ -1,0 +1,35 @@
+import DashboardLinkField from "./Dashboard_boxfield";
+
+export default function DashboardBox({ actionText, reactionText, checked, onCheck, label }) {
+  return (
+    <div className="w-full bg-white rounded-md shadow-md shadow-[#576CA8] p-10 flex items-start justify-between">
+
+      <div className="flex items-start">
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={onCheck}
+          className="self-center mr-20 w-6 h-6 accent-[#576CA8]"
+        />
+
+        <div className="flex flex-col">
+          <div className="mb-6">
+            <p className="font-semibold text-2xl text-[#274690]">Action:</p>
+            <p className="text-xl text-[#576CA8]">{actionText}</p>
+          </div>
+
+          <div>
+            <p className="font-semibold text-2xl text-[#274690]">Reaction:</p>
+            <p className="text-xl text-[#576CA8]">{reactionText}</p>
+          </div>
+        </div>
+      </div>
+
+      <DashboardLinkField
+        label={label}
+        onApply={(link) => console.log("Lien appliqué :", link)}
+        className="ml-auto"
+      />
+    </div>
+  );
+}
