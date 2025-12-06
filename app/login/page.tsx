@@ -2,6 +2,7 @@
 
 import { EyeClosed, Eye } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [show, setShow] = useState(false);
@@ -49,9 +50,9 @@ export default function LoginPage() {
             Log in
           </button>
 
-          <a href="#" className="text-gray-600 hover:text-gray-800 text-center">
+          <Link href="/SignUp" className="text-gray-600 hover:text-gray-800 text-center">
             Create account
-          </a>
+          </Link>
         </div>
 
         <div className="bg-[#1C3738] rounded-2xl p-6 md:p-8 flex flex-col justify-center">
