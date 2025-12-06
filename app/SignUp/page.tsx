@@ -1,13 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import { Eye, EyeClosed } from "lucide-react";
+import Header from "../Components/Area_banner";
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#FFFAFA] flex flex-col items-center p-0 m-0">
+    <div className="min-h-screen bg-[#FFFAFA]">
+      <Header />
+    <div className="flex flex-col items-center mt-40">
       <div className="flex justify-center items-center w-full flex-1">
         <div className="bg-white rounded-2xl shadow-2xl shadow-[#576CA8] max-w-3xl w-full p-10">
           <h1 className="text-3xl font-bold text-center mb-8 text-[#1B1D20]">
@@ -62,6 +65,7 @@ export default function SignUpPage() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

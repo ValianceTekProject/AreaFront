@@ -4,6 +4,7 @@ import { EyeClosed, Eye } from 'lucide-react';
 import { useState} from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Header from "../Components/Area_banner";
 
 export default function LoginPage() {
   const [show, setShow] = useState(false);
@@ -14,7 +15,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFAFA] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#FFFAFA]">
+      <Header />
+    <div className="flex items-center justify-center p-6 mt-30">
       <div className="bg-white rounded-3xl shadow-2xl shadow-[#576CA8] w-full max-w-7xl p-6 md:p-15 grid md:grid-cols-2 gap-8 md:gap-30">
         <div className="flex flex-col justify-center">
           <div className="mb-8">
@@ -100,6 +103,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
