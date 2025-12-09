@@ -40,7 +40,7 @@ export default function LoginPage() {
         if (data.token) {
           localStorage.setItem("authToken", data.token);
         }
-        window.location.href = "/dashboard";
+        window.location.href = "/Dashboard";
       } else {
         console.error("Error:", data.message);
       }
