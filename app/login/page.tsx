@@ -1,17 +1,26 @@
 'use client';
 
 import { EyeClosed, Eye } from 'lucide-react';
-import { useState} from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import Header from "../Components/Area_banner";
 
-
-export default function LoginPage() {
+function LoginForm() {
+  const searchParams = useSearchParams();
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: ""
   });
+
+  useEffect(() => {
+    const token = searchParams.get('token');
+    if (token) {
+      localStorage.setItem('authToken', token);
+      window.location.href = '/Dashboard';
+    }
+  }, [searchParams]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -60,11 +69,9 @@ export default function LoginPage() {
 
   const discord_login = async () => {
     window.location.href = "http://localhost:8080/auth/discord/login"
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-[#FFFAFA]">
-      <Header />
     <div className="flex items-center justify-center p-6 mt-30">
       <div className="bg-white rounded-3xl shadow-2xl shadow-[#576CA8] w-full max-w-7xl p-6 md:p-15 grid md:grid-cols-2 gap-8 md:gap-30">
         <div className="flex flex-col justify-center">
@@ -158,6 +165,23 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <div className="min-h-screen bg-[#FFFAFA]">
+      <Header />
+      <Suspense fallback={
+        <div className="flex items-center justify-center p-6 mt-30">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#274690] mx-auto mb-4"></div>
+            <p className="text-xl text-[#1B264F]">Loading...</p>
+          </div>
+        </div>
+      }>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 }
