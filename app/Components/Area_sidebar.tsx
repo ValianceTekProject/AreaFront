@@ -2,24 +2,32 @@
 
 import Link from "next/link";
 import { Settings } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
+  const pathname = usePathname();
+
+  const baseStyle = "px-6 py-8 text-xl cursor-pointer block w-full h-full";
+  const hoverStyle = "hover:text-black hover:bg-[#FFFAFA]";
+
   return (
     <div className="absolute left-0 top-0 h-full w-60 bg-[#1B264F] z-15">
       <nav className="mt-15">
         <ul>
-          <li className="px-6 py-8 text-xl text-white hover:text-black hover:bg-[#FFFAFA] cursor-pointer">
-            <Link href="/Dashboard" className="block w-full h-full">
+          <li>
+            <Link
+              href="/Dashboard"
+              className={`${baseStyle} ${pathname === "/Dashboard" ? "bg-[#FFFAFA] text-black" : "text-white " + hoverStyle }`}>
               Area Dashboard
             </Link>
           </li>
-
-          <li className="px-6 py-8 text-xl text-white hover:text-black hover:bg-[#FFFAFA] cursor-pointer">
+          <li className={`${baseStyle} text-white ${hoverStyle}`}>
             Area Configuration
           </li>
-
-          <li className="px-6 py-8 text-xl text-white hover:text-black hover:bg-[#FFFAFA] cursor-pointer">
-            <Link href="/Services" className="block w-full h-full">
+          <li>
+            <Link
+              href="/Services"
+              className={`${baseStyle} ${ pathname === "/Services" ? "bg-[#FFFAFA] text-black" : "text-white " + hoverStyle }`}>
               Services
             </Link>
           </li>
