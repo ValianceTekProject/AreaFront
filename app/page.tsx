@@ -5,7 +5,7 @@ import SignUpPage from "./SignUp/page";
 export default function Home() {
   return (
     <div>
-      <SignUpPage/>
+      <LoginPage/>
     </div>
   );
 }
