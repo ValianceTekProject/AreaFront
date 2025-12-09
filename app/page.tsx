@@ -6,7 +6,7 @@ import Services from "./Services/page";
 export default function Home() {
   return (
     <div>
-      <Services/>
+      <LoginPage/>
     </div>
   );
 }
