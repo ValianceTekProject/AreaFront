@@ -3,13 +3,14 @@
 import Image from "next/image";
 import Sidebar from "../Components/Area_sidebar";
 import Header from "../Components/Area_banner";
+import OAuthPopupButton from "../Components/OAuthPopup";
 
 export default function ServicesPage() {
   const services = [
-    { name: "Spotify", icon: "/spotify.svg" },
-    { name: "Google", icon: "/google.svg" },
-    { name: "Github", icon: "/github.svg" },
-    { name: "Discord", icon: "/discord.svg" },
+    { name: "Spotify", icon: "/spotify.svg", url: "http://localhost:8080/auth/spotify/login" },
+    { name: "Google", icon: "/google.svg", url: "http://localhost:8080/auth/google/login" },
+    { name: "Github", icon: "/github.svg", url: "http://localhost:8080/auth/github/login" },
+    { name: "Discord", icon: "/discord.svg", url: "http://localhost:8080/auth/discord/login" },
   ];
 
   return (
@@ -23,21 +24,12 @@ export default function ServicesPage() {
 
           <div className="mt-16 flex flex-col gap-15">
             {services.map((s) => (
-              <button
+              <OAuthPopupButton
                 key={s.name}
-                className="w-96 h-20 flex items-center gap-7 border border-black rounded-lg px-4 bg-white shadow-sm hover:shadow-lg transition"
-              >
-                <Image
-                  src={s.icon}
-                  alt={s.name}
-                  width={26}
-                  height={26}
-                  className="select-none"
-                />
-                <span className="font-medium text-[#576CA8]">
-                  Log in with {s.name}
-                </span>
-              </button>
+                name={s.name}
+                icon={s.icon}
+                url={s.url}
+              />
             ))}
           </div>
         </div>
