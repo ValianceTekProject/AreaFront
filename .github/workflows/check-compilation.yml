@@ -1,0 +1,13 @@
+name: Check binary
+
+on:
+  workflow_call:
+
+jobs:
+    check-compilation:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v4
+          - name: Compile
+            run: docker build .
