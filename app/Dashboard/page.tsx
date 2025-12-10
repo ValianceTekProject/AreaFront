@@ -10,11 +10,6 @@ export default function Dashboard() {
   const handleAreas = async () => {
     try {
       const token = localStorage.getItem('authToken');
-      
-      if (!token) {
-        window.location.href = '/login';
-        return;
-      }
 
       const response = await fetch("http://localhost:8080/areas", {
         method: "GET",
