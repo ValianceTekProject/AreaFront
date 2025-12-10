@@ -1,9 +1,23 @@
+import React from "react";
 import DashboardLinkField from "./Dashboard_boxfield";
 
-export default function DashboardBox({ actionText, reactionText, checked, onCheck, label }) {
+interface DashboardBoxProps {
+  actionText: string;
+  reactionText: string;
+  checked: boolean;
+  onCheck: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+}
+
+export default function DashboardBox({
+  actionText,
+  reactionText,
+  checked,
+  onCheck,
+  label,
+}: DashboardBoxProps) {
   return (
     <div className="w-full bg-white rounded-md shadow-md shadow-[#576CA8] p-10 flex items-start justify-between">
-
       <div className="flex items-start">
         <input
           type="checkbox"
@@ -27,8 +41,7 @@ export default function DashboardBox({ actionText, reactionText, checked, onChec
 
       <DashboardLinkField
         label={label}
-        onApply={(link) => console.log("Lien appliqué :", link)}
-        className="ml-auto"
+        onApply={(link: string) => console.log("Lien appliqué :", link)}
       />
     </div>
   );
