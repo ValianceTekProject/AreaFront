@@ -1,14 +1,21 @@
-"use client";
+'use client';
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 interface OAuthPopupButtonProps {
   name: string;
-  icon: string;
+  icon: React.ReactNode;
   url: string;
 }
 
 export default function OAuthPopupButton({ name, icon, url }: OAuthPopupButtonProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   function openOAuthPopup() {
     const width = 600;
     const height = 700;
@@ -23,16 +30,16 @@ export default function OAuthPopupButton({ name, icon, url }: OAuthPopupButtonPr
 
     if (!popup) {
       alert("Popup blocked. Please allow popups for this site.");
-      return;
     }
   }
 
+  if (!mounted) return null;
   return (
     <button
       onClick={openOAuthPopup}
-      className="w-96 h-20 flex items-center gap-7 border border-black rounded-lg px-4 bg-white shadow-sm hover:shadow-lg transition"
+      className="w-96 h-20 flex items-center gap-7 border border-black rounded-lg px-4 bg-white shadow-sm hover:shadow-lg transition hover:bg-gray-200"
     >
-      <Image src={icon} alt={name} width={26} height={26} />
+      {icon}
       <span className="font-medium text-[#576CA8]">
         Log in with {name}
       </span>

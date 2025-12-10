@@ -6,6 +6,11 @@ import Link from 'next/link';
 import Header from "../Components/Area_banner";
 import OAuthPopupButton from '../Components/OAuthPopup';
 
+import GoogleIcon from '../Components/Google_Icon';
+import DiscordIcon from '../Components/Discord_Icon';
+import GithubIcon from '../Components/Github_Icon';
+import SpotifyIcon from '../Components/Spotify_Icon';
+
 export default function LoginPage() {
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({
@@ -51,10 +56,10 @@ export default function LoginPage() {
   };
 
   const services = [
-    { name: "Google", icon: "/google.svg", url: "http://localhost:8080/auth/google/login" },
-    { name: "Discord", icon: "/discord.svg", url: "http://localhost:8080/auth/discord/login" },
-    { name: "Github", icon: "/github.svg", url: "http://localhost:8080/auth/github/login" },
-    { name: "Spotify", icon: "/spotify.svg", url: "http://localhost:8080/auth/spotify/login" },
+    { name: "Google", url: "http://localhost:8080/auth/google/login", icon: <GoogleIcon /> },
+    { name: "Discord", url: "http://localhost:8080/auth/discord/login", icon: <DiscordIcon /> },
+    { name: "Github", url: "http://localhost:8080/auth/github/login", icon: <GithubIcon /> },
+    { name: "Spotify", url: "http://localhost:8080/auth/spotify/login", icon: <SpotifyIcon /> },
   ];
 
   return (
@@ -65,9 +70,7 @@ export default function LoginPage() {
 
           <div className="flex flex-col justify-center">
             <div className="mb-8">
-              <label className="block text-2xl font-semibold text-[#1B1D20] mb-4">
-                Email
-              </label>
+              <label className="block text-2xl font-semibold text-[#1B1D20] mb-4">Email</label>
               <input
                 type="email"
                 name="email"
@@ -79,9 +82,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mb-2">
-              <label className="block text-2xl font-semibold text-gray-800 mb-4">
-                Password
-              </label>
+              <label className="block text-2xl font-semibold text-gray-800 mb-4">Password</label>
               <div className="relative mb-2">
                 <input
                   type={show ? "text" : "password"}
@@ -127,8 +128,8 @@ export default function LoginPage() {
                 <OAuthPopupButton
                   key={service.name}
                   name={service.name}
-                  icon={service.icon}
                   url={service.url}
+                  icon={service.icon}
                 />
               ))}
             </div>

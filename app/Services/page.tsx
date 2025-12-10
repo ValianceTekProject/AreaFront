@@ -5,12 +5,17 @@ import Sidebar from "../Components/Area_sidebar";
 import Header from "../Components/Area_banner";
 import OAuthPopupButton from "../Components/OAuthPopup";
 
+import GoogleIcon from '../Components/Google_Icon';
+import DiscordIcon from '../Components/Discord_Icon';
+import GithubIcon from '../Components/Github_Icon';
+import SpotifyIcon from '../Components/Spotify_Icon';
+
 export default function ServicesPage() {
   const services = [
-    { name: "Spotify", icon: "/spotify.svg", url: "http://localhost:8080/auth/spotify/login" },
-    { name: "Google", icon: "/google.svg", url: "http://localhost:8080/auth/google/login" },
-    { name: "Github", icon: "/github.svg", url: "http://localhost:8080/auth/github/login" },
-    { name: "Discord", icon: "/discord.svg", url: "http://localhost:8080/auth/discord/login" },
+    { name: "Spotify", icon: <SpotifyIcon />, url: "http://localhost:8080/auth/spotify/login" },
+    { name: "Google", icon: <GoogleIcon />, url: "http://localhost:8080/auth/google/login" },
+    { name: "Github", icon: <GithubIcon />, url: "http://localhost:8080/auth/github/login" },
+    { name: "Discord", icon: <DiscordIcon />, url: "http://localhost:8080/auth/discord/login" },
   ];
 
   return (
@@ -42,31 +47,31 @@ export default function ServicesPage() {
 
             <div className="mt-8 flex flex-col gap-6">
               <div className="flex items-center gap-4">
-                <Image src="/spotify.svg" alt="spotify" width={32} height={32} />
+                <SpotifyIcon />
+                <span className="text-black text-lg">Not Connected</span>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <GoogleIcon />
+                <span className="text-black text-lg">Not Connected</span>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <GithubIcon />
                 <span className="text-black text-lg">Connected</span>
               </div>
 
               <div className="flex items-center gap-4">
-                <Image src="/google.svg" alt="google" width={32} height={32} />
+                <DiscordIcon />
                 <span className="text-black text-lg">Connected</span>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <Image src="/github.svg" alt="github" width={32} height={32} />
-                <span className="text-black text-lg">Awaiting</span>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <Image src="/discord.svg" alt="discord" width={32} height={32} />
-                <span className="text-black text-lg">Connection error</span>
               </div>
             </div>
 
             <p className="mt-10 text-md text-black">Last synchronisation :</p>
 
             <div className="flex items-center gap-4 mt-3">
-              <Image src="/spotify.svg" alt="spotify" width={28} height={28} />
-              <span className="text-black text-md">Spotify — 3 hours ago</span>
+              <DiscordIcon />
+              <span className="text-black text-md">Discord — 3 hours ago</span>
             </div>
 
             <button className="w-full mt-8 py-3 bg-[#5A80F0] text-white font-medium rounded-md shadow hover:bg-[#4a6cd1] transition">
