@@ -1,11 +1,21 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import DashboardBox from "../Components/Dashboard_box";
-import Sidebar from "../Components/Area_sidebar";
-import Header from "../Components/Area_banner";
+"use client"
+
+import React, { useState, useEffect } from "react"
+import DashboardBox from "../Components/Dashboard_box"
+import Sidebar from "../Components/Area_sidebar"
+import Header from "../Components/Area_banner"
+import AreaPopup from "../Components/AreaPopup"
+
+type Area = {
+  id: string
+  name: string
+  label?: string
+  isEnabled: boolean
+}
 
 export default function Dashboard() {
-  const [items, setItems] = useState<Array<any>>([]);
+  const [items, setItems] = useState<Area[]>([])
+  const [areaOpen, setAreaOpen] = useState(false)
 
   const handleAreas = async () => {
     try {
@@ -15,68 +25,72 @@ export default function Dashboard() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
-        credentials: 'include',
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        setItems(data);
-      }
+      const data = await response.json()
+      setItems(data)
     } catch (err) {
-      console.error("Network error", err);
+      console.error("Network error", err)
     }
-  };
+  }
 
   const handleToggleItem = async (itemId: string, isActive: boolean) => {
-    setItems(prevItems =>
-      prevItems.map(item =>
+    setItems((prev) =>
+      prev.map((item) =>
         item.id === itemId ? { ...item, isEnabled: isActive } : item
       )
-    );
+    )
 
     try {
+      const token = localStorage.getItem('authToken');
+
       const response = await fetch(`http://localhost:8080/areas/${itemId}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
-        credentials: 'include',
         body: JSON.stringify({ is_enabled: isActive }),
       });
 
       if (!response.ok) {
-        setItems(prevItems =>
-          prevItems.map(item =>
-            item.id === itemId ? { ...item, isEnabled: !isActive } : item
-          )
-        );
+        throw new Error("Failed")
       }
-    } catch (err) {
-      setItems(prevItems =>
-        prevItems.map(item =>
+    } catch {
+      setItems((prev) =>
+        prev.map((item) =>
           item.id === itemId ? { ...item, isEnabled: !isActive } : item
         )
-      );
+      )
     }
-  };
+  }
 
   useEffect(() => {
-    handleAreas();
-  }, []);
+    handleAreas()
+  }, [])
 
-  const activeItems = items.filter(item => item.isEnabled);
-  const inactiveItems = items.filter(item => !item.isEnabled);
-
-  console.log("Active items:", activeItems);
-  console.log("Inactive items:", inactiveItems);
+  const activeItems = items.filter((item) => item.isEnabled)
+  const inactiveItems = items.filter((item) => !item.isEnabled)
 
   return (
     <div className="min-h-screen bg-[#FFFAFA] relative flex flex-col">
       <Header />
       <Sidebar />
-      <main className="flex-1 ml-60 flex flex-col items-start justify-start p-10 relative z-0">
-        <h2 className="text-4xl font-bold text-black m-10">Active Area</h2>
+
+      <main className="flex-1 ml-60 flex flex-col p-10 relative z-0">
+        <div className="w-full flex justify-between items-center mb-10">
+          <h2 className="text-4xl font-bold text-black">Active Area</h2>
+
+          <button
+            onClick={() => setAreaOpen(true)}
+            className="px-4 py-2 text-xl font-medium rounded-md bg-[#5A80F0] text-white shadow hover:bg-[#4a6cd1] transition"
+          >
+            Create Area
+          </button>
+        </div>
+
         {activeItems.map((item) => (
           <DashboardBox
             key={item.id}
@@ -88,7 +102,10 @@ export default function Dashboard() {
           />
         ))}
 
-        <h2 className="text-4xl font-bold text-black m-10">Inactive Area</h2>
+        <h2 className="text-4xl font-bold text-black mt-16 mb-10">
+          Inactive Area
+        </h2>
+
         {inactiveItems.map((item) => (
           <DashboardBox
             key={item.id}
@@ -100,6 +117,12 @@ export default function Dashboard() {
           />
         ))}
       </main>
+
+      <AreaPopup
+        open={areaOpen}
+        onClose={() => setAreaOpen(false)}
+        onCreated={handleAreas}
+      />
     </div>
-  );
+  )
 }
