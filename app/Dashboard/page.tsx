@@ -19,15 +19,15 @@ export default function Dashboard() {
 
   const handleAreas = async () => {
     try {
+      const token = localStorage.getItem('authToken');
+
       const response = await fetch("http://localhost:8080/areas", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
-        credentials: "include",
-      })
-
-      if (!response.ok) return
+      });
 
       const data = await response.json()
       setItems(data)
@@ -44,17 +44,16 @@ export default function Dashboard() {
     )
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/areas/${itemId}/status`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ is_enabled: isActive }),
-        }
-      )
+      const token = localStorage.getItem('authToken');
+
+      const response = await fetch(`http://localhost:8080/areas/${itemId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ is_enabled: isActive }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed")
