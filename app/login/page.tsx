@@ -5,7 +5,6 @@ import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Header from "../Components/Area_banner";
-import OAuthPopupButton from '../Components/OAuthPopup';
 
 import GoogleIcon from '../Components/Google_Icon';
 import DiscordIcon from '../Components/Discord_Icon';
@@ -24,6 +23,7 @@ function LoginForm() {
     const token = searchParams.get('token');
     if (token) {
       localStorage.setItem('authToken', token);
+      window.history.replaceState({}, document.title, '/Dashboard');
       window.location.href = '/Dashboard';
     }
   }, [searchParams]);
@@ -63,6 +63,10 @@ function LoginForm() {
     } catch (err) {
       console.error("Network error:", err);
     }
+  };
+
+  const handleOAuthLogin = async (url: string): Promise<void> => {
+    window.location.href = url;
   };
 
   const services = [
@@ -134,12 +138,14 @@ function LoginForm() {
 
             <div className="space-y-4 flex flex-col items-center">
               {services.map(service => (
-                <OAuthPopupButton
+                <button
                   key={service.name}
-                  name={service.name}
-                  url={service.url}
-                  icon={service.icon}
-                />
+                  onClick={() => handleOAuthLogin(service.url)}
+                  className="flex items-center gap-3 w-full max-w-xs px-4 py-3 bg-white text-[#1B264F] rounded-lg font-medium hover:bg-[#F4FFF8] transition-colors"
+                >
+                  {service.icon}
+                  <span>Sign in with {service.name}</span>
+                </button>
               ))}
             </div>
           </div>
