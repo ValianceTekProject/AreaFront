@@ -65,9 +65,25 @@ function LoginForm() {
     }
   };
 
-  const handleOAuthLogin = async (url: string): Promise<void> => {
+const handleOAuthLogin = async (url: string): Promise<void> => {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
     window.location.href = url;
-  };
+    return;
+  }
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    console.error("OAuth error:", err);
+    window.location.href = url;
+  }
+};
+
 
   const services = [
     { name: "Google", url: "http://localhost:8080/auth/google/login", icon: <GoogleIcon /> },
