@@ -12,11 +12,28 @@ import SpotifyIcon from '../Components/Spotify_Icon';
 
 export default function ServicesPage() {
   const services = [
-    { name: "Spotify", icon: <SpotifyIcon />, url: "http://localhost:8080/auth/spotify/login" },
     { name: "Google", icon: <GoogleIcon />, url: "http://localhost:8080/auth/google/login" },
     { name: "Github", icon: <GithubIcon />, url: "http://localhost:8080/auth/github/login" },
     { name: "Discord", icon: <DiscordIcon />, url: "http://localhost:8080/auth/discord/login" },
   ];
+  const handleOAuthLogin = async (url: string): Promise<void> => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      window.location.href = url;
+      return;
+    }
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (err) {
+      console.error("OAuth error:", err);
+      window.location.href = url;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#FFFAFA] relative flex flex-col">
@@ -29,12 +46,14 @@ export default function ServicesPage() {
 
           <div className="mt-16 flex flex-col gap-15">
             {services.map((s) => (
-              <OAuthPopupButton
+              <button
                 key={s.name}
-                name={s.name}
-                icon={s.icon}
-                url={s.url}
-              />
+                onClick={() => handleOAuthLogin(s.url)}
+                className="flex items-center gap-4 p-6 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+              >
+                <div className="text-3xl">{s.icon}</div>
+                <div className="text-lg font-medium text-black">Connect with {s.name}</div>
+              </button>
             ))}
           </div>
         </div>
