@@ -5,11 +5,10 @@ import Header from "../Components/Area_banner"
 import Sidebar from "../Components/Area_sidebar"
 import UsersPanel from "../Components/User_panel"
 import ServicesPanel from "../Components/Service_panel"
-import AreasPanel from "../Components/Area_panel"
 
 
 export default function AdminDashboard() {
-  const [tab, setTab] = useState<"users" | "services" | "areas">("users")
+  const [tab, setTab] = useState<"users" | "services">("users")
 
   return (
     <div className="min-h-screen bg-[#FFFAFA] flex flex-col">
@@ -20,7 +19,7 @@ export default function AdminDashboard() {
         <h1 className="text-4xl font-bold mb-10 text-black">Admin Dashboard</h1>
 
         <div className="flex gap-6 mb-10">
-          {["users", "services", "areas"].map((t) => (
+          {["users", "services"].map((t) => (
             <button
               key={t}
               onClick={() => setTab(t as any)}
@@ -34,7 +33,6 @@ export default function AdminDashboard() {
 
         {tab === "users" && <UsersPanel />}
         {tab === "services" && <ServicesPanel />}
-        {tab === "areas" && <AreasPanel />}
       </main>
     </div>
   )

@@ -16,10 +16,19 @@ type Area = {
 export default function Dashboard() {
   const [items, setItems] = useState<Area[]>([])
   const [areaOpen, setAreaOpen] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleAreas = async () => {
     try {
       const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        setIsAuthenticated(false)
+        setError("You must be logged in")
+        return
+      }
 
       const response = await fetch("http://localhost:8080/areas", {
         method: "GET",
@@ -29,10 +38,59 @@ export default function Dashboard() {
         },
       });
 
+      if (response.status === 401 || response.status === 403) {
+        setIsAuthenticated(false)
+        setError("Session expired, please log in again")
+        return
+      }
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch areas")
+      }
+
       const data = await response.json()
-      setItems(data)
+      setItems(Array.isArray(data) ? data : [])
+      setIsAuthenticated(true)
     } catch (err) {
       console.error("Network error", err)
+      setError("Erreur lors du chargement des zones")
+    }
+  }
+
+  const getUserId = async (): Promise<string | null> => {
+    try {
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        setIsAuthenticated(false)
+        return null
+      }
+
+      const response = await fetch("http://localhost:8080/me/userId", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      });
+
+      if (response.status === 401 || response.status === 403) {
+        setIsAuthenticated(false)
+        setError("Session expirée, veuillez vous reconnecter")
+        return null
+      }
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user info")
+      }
+
+      const data = await response.json()
+      setIsAuthenticated(true)
+      return data.userId || data.id
+    } catch (err) {
+      console.error("Network error", err)
+      setIsAuthenticated(false)
+      return null
     }
   }
 
@@ -45,6 +103,11 @@ export default function Dashboard() {
 
     try {
       const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        setIsAuthenticated(false)
+        return
+      }
 
       const response = await fetch(`http://localhost:8080/areas/${itemId}/status`, {
         method: "PATCH",
@@ -68,8 +131,54 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    handleAreas()
+    const init = async () => {
+      const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        setIsAuthenticated(false)
+        setError("Vous devez être connecté pour accéder à cette page")
+        setLoading(false)
+        return
+      }
+
+      await Promise.all([handleAreas(), getUserId()])
+      setLoading(false)
+    }
+
+    init()
   }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#FFFAFA] flex items-center justify-center">
+        <p className="text-black text-xl">Loading...</p>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated || error) {
+    return (
+      <div className="min-h-screen bg-[#FFFAFA] items-center justify-center relative flex flex-col">
+        <Header />
+        <Sidebar />
+
+        <main className="flex-1 ml-60 flex flex-col items-center justify-center min-h-96">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-4 text-red-500">Access denied</h2>
+            <p className="text-gray-600 mb-6">
+              {error || "You must be logged in to access this page."}
+            </p>
+            <a
+              href="/login"
+              className="px-6 py-2 bg-[#5A80F0] text-white font-medium rounded-md hover:bg-[#4a6cd1] transition"
+            >
+              Log In
+            </a>
+          </div>
+        </main>
+      </div>
+    )
+  }
 
   const activeItems = items.filter((item) => item.isEnabled)
   const inactiveItems = items.filter((item) => !item.isEnabled)
@@ -91,16 +200,19 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {activeItems.map((item) => (
-          <DashboardBox
-            key={item.id}
-            actionText={item.name}
-            reactionText={item.name}
-            checked={item.isEnabled}
-            onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
-            label={item.label || item.name}
-          />
-        ))}
+        {activeItems.map((item) => {
+          const [action, reaction] = item.name.split(" -> ").map((part) => part.trim());
+          return (
+            <DashboardBox
+              key={item.id}
+              actionText={action}
+              reactionText={reaction}
+              checked={item.isEnabled}
+              onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
+              label={item.label || item.name}
+            />
+          );
+        })}
 
         <h2 className="text-4xl font-bold text-black mt-16 mb-10">
           Inactive Area

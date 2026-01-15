@@ -22,6 +22,7 @@ type AreaPopupProps = {
 type SelectItem = {
   value: string
   label: string
+  service: string
 }
 
 const API_URL = "http://localhost:8080"
@@ -65,6 +66,7 @@ export default function AreaPopup({ open, onClose, onCreated }: AreaPopupProps) 
             actionItems.push({
               value: action.name,
               label: `${service.name} — ${action.description}`,
+              service: service.name
             })
           })
         }
@@ -74,6 +76,7 @@ export default function AreaPopup({ open, onClose, onCreated }: AreaPopupProps) 
             reactionItems.push({
               value: reaction.name,
               label: `${service.name} — ${reaction.description}`,
+              service: service.name
             })
           })
         }
@@ -123,8 +126,8 @@ export default function AreaPopup({ open, onClose, onCreated }: AreaPopupProps) 
 
       const areaData = await areaRes.json()
       const areaId = areaData.area.id
-      const serviceNameAction = serviceMapping[selectedAction.split("_")[0]] || selectedAction
-      const serviceNameReaction = serviceMapping[selectedReaction.split("_")[0]] || selectedReaction
+      const serviceNameAction = actions.find(a => a.value === selectedAction)?.service || ""
+      const serviceNameReaction = reactions.find(r => r.value === selectedReaction)?.service || ""
 
       await fetch(`${API_URL}/areas/${areaId}/action/add`, {
         method: "POST",

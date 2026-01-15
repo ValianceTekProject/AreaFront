@@ -9,7 +9,6 @@ import Header from "../Components/Area_banner";
 import GoogleIcon from '../Components/Google_Icon';
 import DiscordIcon from '../Components/Discord_Icon';
 import GithubIcon from '../Components/Github_Icon';
-import SpotifyIcon from '../Components/Spotify_Icon';
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -73,7 +72,6 @@ function LoginForm() {
     { name: "Google", url: "http://localhost:8080/auth/google/login", icon: <GoogleIcon /> },
     { name: "Discord", url: "http://localhost:8080/auth/discord/login", icon: <DiscordIcon /> },
     { name: "Github", url: "http://localhost:8080/auth/github/login", icon: <GithubIcon /> },
-    { name: "Spotify", url: "http://localhost:8080/auth/spotify/login", icon: <SpotifyIcon /> },
   ];
 
   return (
