@@ -122,6 +122,10 @@ export default function AreaPopup({ open, onClose, onCreated }: AreaPopupProps) 
       const serviceMapping: Record<string, string> = {
         github: "Github",
         discord: "Discord",
+        google: "Google",
+        steam: "Steam",
+        twitch: "Twitch",
+        openweather: "OpenWeather",
       }
 
       const areaData = await areaRes.json()
