@@ -57,6 +57,28 @@ export default function Dashboard() {
     }
   }
 
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/areas/${id}/delete`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to delete area");
+      }
+      setItems((prev) => prev.filter((item) => item.id !== id));
+    } catch (err) {
+      console.error("Network error", err);
+    }
+  };
+
+
   const getUserId = async (): Promise<string | null> => {
     try {
       const token = localStorage.getItem('authToken');
@@ -209,6 +231,7 @@ export default function Dashboard() {
               reactionText={reaction}
               checked={item.isEnabled}
               onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
+              onDelete={() => handleDelete(item.id)}
               label={item.label || item.name}
             />
           );
@@ -224,6 +247,7 @@ export default function Dashboard() {
             actionText={item.name}
             reactionText={item.name}
             checked={item.isEnabled}
+            onDelete={() => handleDelete(item.id)}
             onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
             label={item.label || item.name}
           />
