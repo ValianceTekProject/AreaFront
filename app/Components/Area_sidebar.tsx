@@ -3,7 +3,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const pathname = usePathname();
   const baseStyle = "px-6 py-8 text-xl cursor-pointer block w-full h-full";
   const hoverStyle = "hover:text-black hover:bg-[#FFFAFA]";
@@ -65,22 +70,26 @@ export default function Sidebar() {
     init();
   }, []);
 
-  useEffect(() => {
-  }, [userRole]);
+  const handleLinkClick = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
 
   if (loading) {
     return (
-      <div className="absolute left-0 top-0 h-full w-60 bg-[#1B264F] z-15" />
+      <div className="h-full w-60 bg-[#1B264F] z-15" />
     );
   }
 
   return (
-    <div className="absolute left-0 top-0 h-full w-60 bg-[#1B264F] z-15">
-      <nav className="mt-15">
+    <div className="h-full w-60 bg-[#1B264F] z-15">
+      <nav className="mt-16">
         <ul>
           <li>
             <Link
               href="/Dashboard"
+              onClick={handleLinkClick}
               className={`${baseStyle} ${
                 pathname === "/Dashboard"
                   ? "bg-[#FFFAFA] text-black"
@@ -93,6 +102,7 @@ export default function Sidebar() {
           <li>
             <Link
               href="/Services"
+              onClick={handleLinkClick}
               className={`${baseStyle} ${
                 pathname === "/Services"
                   ? "bg-[#FFFAFA] text-black"
@@ -106,6 +116,7 @@ export default function Sidebar() {
             <li>
               <Link
                 href="/Admin"
+                onClick={handleLinkClick}
                 className={`${baseStyle} ${
                   pathname === "/Admin"
                     ? "bg-[#FFFAFA] text-black"

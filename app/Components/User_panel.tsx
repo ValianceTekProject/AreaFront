@@ -77,8 +77,8 @@ export default function UsersPanel() {
 
   if (loading) {
     return (
-      <div className="bg-[#1B264F] rounded-xl shadow p-6">
-        <h2 className="text-2xl font-bold mb-6 text-white">Users</h2>
+      <div className="bg-[#1B264F] rounded-xl shadow p-4 sm:p-6">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-white">Users</h2>
         <p className="text-white/60">Chargement...</p>
       </div>
     )
@@ -86,10 +86,10 @@ export default function UsersPanel() {
 
   if (!isAdmin || error) {
     return (
-      <div className="bg-[#1B264F] rounded-xl shadow p-6 flex items-center justify-center min-h-96">
+      <div className="bg-[#1B264F] rounded-xl shadow p-4 sm:p-6 flex items-center justify-center min-h-96">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4 text-red-400">Access denied</h2>
-          <p className="text-white/60">You do not have the necessary permissions to access this page.</p>
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 text-red-400">Access denied</h2>
+          <p className="text-sm sm:text-base text-white/60">You do not have the necessary permissions to access this page.</p>
         </div>
       </div>
     )
@@ -97,57 +97,97 @@ export default function UsersPanel() {
 
   if (users.length === 0) {
     return (
-      <div className="bg-[#1B264F] rounded-xl shadow p-6">
-        <h2 className="text-2xl font-bold mb-6 text-white">Users</h2>
+      <div className="bg-[#1B264F] rounded-xl shadow p-4 sm:p-6">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-white">Users</h2>
         <p className="text-white/60">Aucun utilisateur trouvé</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-[#1B264F] rounded-xl shadow p-6">
-      <h2 className="text-2xl font-bold mb-6 text-white">Users</h2>
-      <table className="w-full text-left text-white">
-        <thead>
-          <tr className="border-b border-white/20">
-            <th className="pb-3">Email</th>
-            <th>Status</th>
-            <th>Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.id} className="border-b border-white/10 last:border-0">
-              <td className="py-4">{u.email}</td>
-              <td>
-                <span 
-                  onClick={() => changeAuthorizationStatus(u.id, !u.authorized)}
-                  className={`px-3 py-1 rounded-full text-sm font-medium cursor-pointer
-                  ${
-                    u.authorized
-                      ? "bg-green-500/20 text-green-300"
-                      : "bg-red-500/20 text-red-300"
-                  }`}
-                >
-                  {u.authorized ? "AUTHORIZED" : "UNAUTHORIZED"}
-                </span>
-              </td>
-              <td>
-                <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium
-                  ${
-                    u.admin === true
-                      ? "bg-purple-500/20 text-purple-300"
-                      : "bg-blue-500/20 text-blue-300"
-                  }`}
-                >
-                  {u.admin ? "ADMIN" : "USER"}
-                </span>
-              </td>
+    <div className="bg-[#1B264F] rounded-xl shadow p-4 sm:p-6">
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-white">Users</h2>
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full text-left text-white">
+          <thead>
+            <tr className="border-b border-white/20">
+              <th className="pb-3">Email</th>
+              <th>Status</th>
+              <th>Role</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((u) => (
+              <tr key={u.id} className="border-b border-white/10 last:border-0">
+                <td className="py-4">{u.email}</td>
+                <td>
+                  <span
+                    onClick={() => changeAuthorizationStatus(u.id, !u.authorized)}
+                    className={`px-3 py-1 rounded-full text-sm font-medium cursor-pointer
+                    ${
+                      u.authorized
+                        ? "bg-green-500/20 text-green-300"
+                        : "bg-red-500/20 text-red-300"
+                    }`}
+                  >
+                    {u.authorized ? "AUTHORIZED" : "UNAUTHORIZED"}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-medium
+                    ${
+                      u.admin === true
+                        ? "bg-purple-500/20 text-purple-300"
+                        : "bg-blue-500/20 text-blue-300"
+                    }`}
+                  >
+                    {u.admin ? "ADMIN" : "USER"}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="md:hidden space-y-4">
+        {users.map((u) => (
+          <div key={u.id} className="bg-white/5 rounded-lg p-4 space-y-3">
+            <div className="break-all">
+              <p className="text-white/60 text-sm mb-1">Email</p>
+              <p className="text-white font-medium">{u.email}</p>
+            </div>
+            <div>
+              <p className="text-white/60 text-sm mb-2">Status</p>
+              <span 
+                onClick={() => changeAuthorizationStatus(u.id, !u.authorized)}
+                className={`inline-block px-3 py-1 rounded-full text-sm font-medium cursor-pointer
+                ${
+                  u.authorized
+                    ? "bg-green-500/20 text-green-300"
+                    : "bg-red-500/20 text-red-300"
+                }`}
+              >
+                {u.authorized ? "AUTHORIZED" : "UNAUTHORIZED"}
+              </span>
+            </div>
+            <div>
+              <p className="text-white/60 text-sm mb-2">Role</p>
+              <span
+                className={`inline-block px-3 py-1 rounded-full text-sm font-medium
+                ${
+                  u.admin === true
+                    ? "bg-purple-500/20 text-purple-300"
+                    : "bg-blue-500/20 text-blue-300"
+                }`}
+              >
+                {u.admin ? "ADMIN" : "USER"}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
