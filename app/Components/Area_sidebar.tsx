@@ -16,6 +16,13 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const [userRole, setUserRole] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const downloadAPK = async () => {
+    const link = document.createElement('a');
+    link.href = '/APK/app-release.apk';
+    link.download = 'app-release.apk';
+    link.click();
+  };
+
   const getUserId = async () => {
     try {
       const token = localStorage.getItem("authToken");
@@ -129,6 +136,10 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           )}
         </ul>
       </nav>
+      <button className="absolute bottom-10 left-6 right-6 flex items-center gap-2 px-6 py-2 bg-white text-[#576CA8] font-semibold rounded hover:bg-gray-200"
+        onClick={downloadAPK}>
+        <span>Download the app</span>
+      </button>
     </div>
   );
 }

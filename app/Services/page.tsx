@@ -76,7 +76,6 @@ export default function ServicesPage() {
         throw new Error("Failed to fetch services status");
       }
       const data = await response.json();
-      console.log("Fetched services status:", data);
       setServicesStatus(data || []);
       return data;
     } catch (err) {
