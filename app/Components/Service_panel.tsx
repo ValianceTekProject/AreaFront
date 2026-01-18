@@ -6,9 +6,9 @@ type ServiceStats = {
   reactionsCount: number
 }
 
-const countServiceStats = (aboutData: any): ServiceStats[] => {  
+const countServiceStats = (aboutData: any): ServiceStats[] => {
   let servicesArray: any[] = []
-  
+
   if (Array.isArray(aboutData)) {
     servicesArray = aboutData
   } else if (aboutData?.server?.services && Array.isArray(aboutData.server.services)) {
@@ -20,7 +20,7 @@ const countServiceStats = (aboutData: any): ServiceStats[] => {
   return servicesArray.map((service: any) => {
     const actionsCount = (service.actions && Array.isArray(service.actions)) ? service.actions.length : 0
     const reactionsCount = (service.reactions && Array.isArray(service.reactions)) ? service.reactions.length : 0
-        
+
     return {
       name: service.name,
       actionsCount,
@@ -38,14 +38,14 @@ export default function ServicesPanel() {
     const fetchServices = async () => {
       try {
         const response = await fetch("http://localhost:8080/about.json")
-        
+
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`)
         }
 
-        const data = await response.json()        
+        const data = await response.json()
         const formattedServices = countServiceStats(data)
-        
+
         setServices(formattedServices)
       } catch (err) {
         console.error("Error fetching services:", err)
@@ -61,7 +61,7 @@ export default function ServicesPanel() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <p className="text-white text-lg">Chargement des services...</p>
+        <p className="text-black text-base sm:text-lg">Chargement des services...</p>
       </div>
     )
   }
@@ -69,7 +69,7 @@ export default function ServicesPanel() {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <p className="text-red-400 text-lg">{error}</p>
+        <p className="text-red-500 text-base sm:text-lg">{error}</p>
       </div>
     )
   }
@@ -77,24 +77,24 @@ export default function ServicesPanel() {
   if (services.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <p className="text-white/60 text-lg">Aucun service trouvé</p>
+        <p className="text-gray-600 text-base sm:text-lg">Aucun service trouvé</p>
       </div>
     )
   }
 
   return (
-    <div className="grid grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
       {services.map((s) => (
         <div
           key={s.name}
-          className="bg-[#1B264F] rounded-xl shadow p-6 hover:shadow-lg transition"
+          className="bg-[#1B264F] rounded-xl shadow p-4 sm:p-6 hover:shadow-lg transition"
         >
-          <h3 className="text-xl font-bold mb-4 text-white">{s.name}</h3>
+          <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-white">{s.name}</h3>
           <div className="space-y-2">
-            <p className="text-white/80">
+            <p className="text-sm sm:text-base text-white/80">
               <span className="font-semibold">Actions:</span> {s.actionsCount}
             </p>
-            <p className="text-white/80">
+            <p className="text-sm sm:text-base text-white/80">
               <span className="font-semibold">Reactions:</span> {s.reactionsCount}
             </p>
           </div>

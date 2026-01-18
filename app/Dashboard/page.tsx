@@ -5,6 +5,7 @@ import DashboardBox from "../Components/Dashboard_box"
 import Sidebar from "../Components/Area_sidebar"
 import Header from "../Components/Area_banner"
 import AreaPopup from "../Components/AreaPopup"
+import { Menu, X } from "lucide-react"
 
 type Area = {
   id: string
@@ -19,6 +20,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const handleAreas = async () => {
     try {
@@ -155,7 +157,7 @@ export default function Dashboard() {
   useEffect(() => {
     const init = async () => {
       const token = localStorage.getItem('authToken');
-      
+
       if (!token) {
         setIsAuthenticated(false)
         setError("Vous devez être connecté pour accéder à cette page")
@@ -166,7 +168,6 @@ export default function Dashboard() {
       await Promise.all([handleAreas(), getUserId()])
       setLoading(false)
     }
-
     init()
   }, [])
 
@@ -182,12 +183,30 @@ export default function Dashboard() {
     return (
       <div className="min-h-screen bg-[#FFFAFA] items-center justify-center relative flex flex-col">
         <Header />
-        <Sidebar />
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="fixed top-4 right-4 z-50 p-2 bg-white rounded-lg shadow-lg lg:hidden hover:bg-gray-100 transition-colors"
+          aria-label="Toggle menu"
+        >
+          {sidebarOpen ? <X size={24} className="text-[#1B264F]" /> : <Menu size={24} className="text-[#1B264F]" />}
+        </button>
 
-        <main className="flex-1 ml-60 flex flex-col items-center justify-center min-h-96">
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 bg-opacity-50 z-30 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+        <div className={`
+          fixed top-0 left-0 h-full z-40 transition-transform duration-300 ease-in-out
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
+        `}>
+          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        </div>
+        <main className="flex-1 ml-0 lg:ml-60 flex flex-col items-center justify-center min-h-96 px-4">
           <div className="text-center">
-            <h2 className="text-2xl font-bold mb-4 text-red-500">Access denied</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 text-red-500">Access denied</h2>
+            <p className="text-sm md:text-base text-gray-600 mb-6">
               {error || "You must be logged in to access this page."}
             </p>
             <a
@@ -208,20 +227,36 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-[#FFFAFA] relative flex flex-col">
       <Header />
-      <Sidebar />
-
-      <main className="flex-1 ml-60 flex flex-col p-10 relative z-0">
-        <div className="w-full flex justify-between items-center mb-10">
-          <h2 className="text-4xl font-bold text-black">Active Area</h2>
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="fixed top-4 right-4 z-50 p-2 bg-white rounded-lg shadow-lg lg:hidden hover:bg-gray-100 transition-colors"
+        aria-label="Toggle menu"
+      >
+        {sidebarOpen ? <X size={24} className="text-[#1B264F]" /> : <Menu size={24} className="text-[#1B264F]" />}
+      </button>
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-opacity-50 z-30 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      <div className={`
+        fixed top-0 left-0 h-full z-40 transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
+      `}>
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      </div>
+      <main className="flex-1 ml-0 lg:ml-60 flex flex-col p-4 md:p-6 lg:p-10 relative z-0">
+        <div className="w-full flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-10 gap-4">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black">Active Area</h2>
 
           <button
             onClick={() => setAreaOpen(true)}
-            className="px-4 py-2 text-xl font-medium rounded-md bg-[#5A80F0] text-white shadow hover:bg-[#4a6cd1] transition"
+            className="w-full sm:w-auto px-4 py-2 text-lg md:text-xl font-medium rounded-md bg-[#5A80F0] text-white shadow hover:bg-[#4a6cd1] transition"
           >
             Create Area
           </button>
         </div>
-
         {activeItems.map((item) => {
           const [action, reaction] = item.name.split(" -> ").map((part) => part.trim());
           return (
@@ -236,24 +271,24 @@ export default function Dashboard() {
             />
           );
         })}
-
-        <h2 className="text-4xl font-bold text-black mt-16 mb-10">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mt-10 md:mt-16 mb-6 md:mb-10">
           Inactive Area
         </h2>
-
-        {inactiveItems.map((item) => (
-          <DashboardBox
-            key={item.id}
-            actionText={item.name}
-            reactionText={item.name}
-            checked={item.isEnabled}
-            onDelete={() => handleDelete(item.id)}
-            onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
-            label={item.label || item.name}
-          />
-        ))}
+        {inactiveItems.map((item) => {
+          const [action, reaction] = item.name.split(" -> ").map((part) => part.trim());
+          return (
+            <DashboardBox
+              key={item.id}
+              actionText={action}
+              reactionText={reaction}
+              checked={item.isEnabled}
+              onDelete={() => handleDelete(item.id)}
+              onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
+              label={item.label || item.name}
+            />
+          );
+        })}
       </main>
-
       <AreaPopup
         open={areaOpen}
         onClose={() => setAreaOpen(false)}
