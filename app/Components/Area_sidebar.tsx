@@ -18,7 +18,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
   const downloadAPK = async () => {
     const link = document.createElement("a");
-    link.href = "/client.apk";
+    link.href = "APK/app-release.apk";
     link.download = "area-client.apk";
     document.body.appendChild(link);
     link.click();
