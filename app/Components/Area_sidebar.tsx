@@ -17,10 +17,12 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   const [loading, setLoading] = useState(true);
 
   const downloadAPK = async () => {
-    const link = document.createElement('a');
-    link.href = '/APK/app-release.apk';
-    link.download = 'app-release.apk';
+    const link = document.createElement("a");
+    link.href = "/client.apk";
+    link.download = "area-client.apk";
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   };
 
   const getUserId = async () => {
@@ -84,9 +86,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   };
 
   if (loading) {
-    return (
-      <div className="h-full w-60 bg-[#1B264F] z-15" />
-    );
+    return <div className="h-full w-60 bg-[#1B264F] z-15" />;
   }
 
   return (
@@ -136,8 +136,10 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           )}
         </ul>
       </nav>
-      <button className="absolute bottom-10 left-6 right-6 flex items-center gap-2 px-6 py-2 bg-white text-[#576CA8] font-semibold rounded hover:bg-gray-200"
-        onClick={downloadAPK}>
+      <button
+        className="absolute bottom-10 left-6 right-6 flex items-center gap-2 px-6 py-2 bg-white text-[#576CA8] font-semibold rounded hover:bg-gray-200"
+        onClick={downloadAPK}
+      >
         <span>Download the app</span>
       </button>
     </div>
