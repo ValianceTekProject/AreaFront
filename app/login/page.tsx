@@ -76,24 +76,22 @@ function LoginForm() {
 
   return (
     <div className="min-h-screen bg-[#FFFAFA]">
-      <div className="flex items-center justify-center p-6 mt-30">
-        <div className="bg-white rounded-3xl shadow-2xl shadow-[#576CA8] w-full max-w-7xl p-6 md:p-15 grid md:grid-cols-2 gap-8 md:gap-30">
-
+      <div className="flex items-center justify-center p-4 sm:p-6 mt-10 sm:mt-20 lg:mt-30">
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl shadow-[#576CA8] w-full max-w-7xl p-6 sm:p-8 md:p-10 lg:p-15 grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 lg:gap-30">
           <div className="flex flex-col justify-center">
-            <div className="mb-8">
-              <label className="block text-2xl font-semibold text-[#1B1D20] mb-4">Email</label>
+            <div className="mb-6 sm:mb-8">
+              <label className="block text-xl sm:text-2xl font-semibold text-[#1B1D20] mb-3 sm:mb-4">Email</label>
               <input
                 type="email"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Enter your email"
-                className="w-full px-4 py-3 border-2 border-[#576CA8] rounded-lg focus:outline-none focus:border-[#1B264F] text-[#1B264F] transition-colors placeholder:text-[#576CA8]"
+                className="w-full px-4 py-3 text-base border-2 border-[#576CA8] rounded-lg focus:outline-none focus:border-[#1B264F] text-[#1B264F] transition-colors placeholder:text-[#576CA8]"
               />
             </div>
-
             <div className="mb-2">
-              <label className="block text-2xl font-semibold text-gray-800 mb-4">Password</label>
+              <label className="block text-xl sm:text-2xl font-semibold text-gray-800 mb-3 sm:mb-4">Password</label>
               <div className="relative mb-2">
                 <input
                   type={show ? "text" : "password"}
@@ -101,7 +99,7 @@ function LoginForm() {
                   value={form.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
-                  className="w-full px-4 py-3 border-2 border-[#576CA8] rounded-lg focus:outline-none focus:border-[#1B264F] text-[#1B264F] transition-colors placeholder:text-[#576CA8]"
+                  className="w-full px-4 py-3 text-base border-2 border-[#576CA8] rounded-lg focus:outline-none focus:border-[#1B264F] text-[#1B264F] transition-colors placeholder:text-[#576CA8]"
                 />
                 <button
                   type="button"
@@ -112,34 +110,30 @@ function LoginForm() {
                 </button>
               </div>
             </div>
-
-            <a href="#" className="text-sm text-[#576CA8] hover:text-[#1B264F] mb-12">
+            <a href="#" className="text-sm text-[#576CA8] hover:text-[#1B264F] mb-8 sm:mb-12">
               Forgot password ?
             </a>
-
             <button
-              className="w-full max-w-xs bg-[#274690] text-white py-3.5 rounded-lg text-lg font-medium hover:bg-[#1B264F] transition-colors mb-6 mx-auto"
+              className="w-full max-w-xs bg-[#274690] text-white py-3.5 rounded-lg text-base sm:text-lg font-medium hover:bg-[#1B264F] transition-colors mb-6 mx-auto"
               onClick={handleLogin}
             >
               Log in
             </button>
-
-            <Link href="/SignUp" className="text-[#576CA8] hover:text-[#1B264F] text-center">
+            <Link href="/SignUp" className="text-[#576CA8] hover:text-[#1B264F] text-center text-base">
               Create account
             </Link>
           </div>
-
-          <div className="bg-[#1B264F] rounded-2xl p-6 md:p-8 flex flex-col justify-center">
-            <h2 className="text-[#F4FFF8] text-2xl font-semibold mb-8 text-center">
+          <div className="bg-[#1B264F] rounded-xl sm:rounded-2xl p-6 sm:p-8 flex flex-col justify-center">
+            <h2 className="text-[#F4FFF8] text-xl sm:text-2xl font-semibold mb-6 sm:mb-8 text-center">
               Other sign in methods
             </h2>
 
-            <div className="space-y-4 flex flex-col items-center">
+            <div className="space-y-3 sm:space-y-4 flex flex-col items-center">
               {services.map(service => (
                 <button
                   key={service.name}
                   onClick={() => handleOAuthLogin(service.url)}
-                  className="flex items-center gap-3 w-full max-w-xs px-4 py-3 bg-white text-[#1B264F] rounded-lg font-medium hover:bg-[#F4FFF8] transition-colors"
+                  className="flex items-center justify-center gap-3 w-full max-w-xs px-4 py-3 bg-white text-[#1B264F] rounded-lg text-base font-medium hover:bg-[#F4FFF8] transition-colors"
                 >
                   {service.icon}
                   <span>Sign in with {service.name}</span>
@@ -158,10 +152,10 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#FFFAFA]">
       <Header />
       <Suspense fallback={
-        <div className="flex items-center justify-center p-6 mt-30">
+        <div className="flex items-center justify-center p-6 mt-20 sm:mt-30">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#274690] mx-auto mb-4"></div>
-            <p className="text-xl text-[#1B264F]">Loading...</p>
+            <p className="text-lg sm:text-xl text-[#1B264F]">Loading...</p>
           </div>
         </div>
       }>
