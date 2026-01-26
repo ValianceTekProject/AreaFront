@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react';
 import { useRouter } from 'next/navigation';
  
@@ -8,24 +10,21 @@ const Footer = () => {
     {
       title: 'ABOUT',
       links: [
-        { label: 'About AREA', path: '/about' },
-        { label: 'Documentation', path: '/docs' },
-        { label: 'Contact', path: '/contact' },
+        { label: 'About AREA', path: '../About' },
+        { label: 'Contact', path: '../Contact' },
       ],
     },
     {
       title: 'LEGAL',
       links: [
-        { label: 'Terms of Service', path: '/terms' },
-        { label: 'Privacy Policy', path: '/privacy' },
+        { label: 'Terms of Service', path: '../Terms' },
+        { label: 'Privacy Policy', path: '../Privacy' },
       ],
     },
     {
       title: 'RESOURCES',
       links: [
-        { label: 'Help Center', path: '/help' },
-        { label: 'API Documentation', path: '/api-docs' },
-        { label: 'Community', path: '/community' },
+        { label: 'Help Center', path: '../Help' },
       ],
     },
   ];
