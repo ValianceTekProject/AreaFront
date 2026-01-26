@@ -54,7 +54,7 @@ function LoginForm() {
         if (data.token) {
           localStorage.setItem("authToken", data.token);
         }
-        window.location.href = "/Dashboard";
+        window.location.href = "/Home";
       } else {
         console.error("Error:", data.message);
       }

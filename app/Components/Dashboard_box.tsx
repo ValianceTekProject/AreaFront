@@ -1,4 +1,5 @@
 import React from "react";
+import { Trash2 } from "lucide-react";
 
 interface DashboardBoxProps {
   actionText: string;
@@ -25,40 +26,46 @@ export default function DashboardBox({
   onDelete,
   label,
 }: DashboardBoxProps) {
-return (
-  <div className="w-full bg-white rounded-md shadow-md shadow-[#576CA8] p-10 flex items-center">
-    <div className="flex items-start flex-1">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={onCheck}
-        className="self-center mr-20 w-6 h-6 accent-[#576CA8]"
-      />
-      <div className="flex flex-col">
-        <div className="mb-6">
-          <p className="font-semibold text-2xl text-[#274690]">Action:</p>
-          <p className="text-xl text-[#576CA8]">
-            {formatText(actionText)}
-          </p>
-        </div>
-        <div>
-          <p className="font-semibold text-2xl text-[#274690]">Reaction:</p>
-          <p className="text-xl text-[#576CA8]">
-            {formatText(reactionText)}
-          </p>
+  return (
+    <div className="w-full bg-[#E8EAF6] rounded-3xl border-2 border-[#576CA8] p-8 flex items-center mb-6 hover:shadow-lg transition-shadow">
+      <div className="flex items-center flex-1 gap-8">
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={onCheck}
+          className="w-7 h-7 accent-[#576CA8] cursor-pointer"
+        />
+
+        <div className="flex flex-1 justify-between items-center gap-12">
+          <div className="flex-1">
+            <p className="font-bold text-xl text-[#1B264F] mb-2">Action:</p>
+            <p className="text-lg text-[#576CA8] font-medium">
+              {formatText(actionText)}
+            </p>
+            <p className="text-sm text-[#576CA8] mt-1 opacity-75">
+              Description de l'action
+            </p>
+          </div>
+
+          <div className="flex-1">
+            <p className="font-bold text-xl text-[#1B264F] mb-2">Reaction:</p>
+            <p className="text-lg text-[#576CA8] font-medium">
+              {formatText(reactionText)}
+            </p>
+            <p className="text-sm text-[#576CA8] mt-1 opacity-75">
+              Description de l'action
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-    <div className="w-24 flex items-center justify-center mt-6">
+
       <button
         onClick={onDelete}
-        className="w-14 h-14 flex items-center justify-center text-2xl text-red-600 rounded-full hover:bg-red-100 hover:text-red-800 transition"
+        className="ml-6 w-12 h-12 flex items-center justify-center text-[#576CA8] hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
         aria-label="Delete"
       >
-        🗑️
+        <Trash2 size={24} />
       </button>
     </div>
-
-  </div>
-);
+  );
 }

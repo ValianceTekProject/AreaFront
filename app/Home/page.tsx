@@ -9,7 +9,7 @@ import { Edit, Search } from 'lucide-react';
 const MainPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#FFFAFA]">
-       <Header />
+        <Header />
         <div className="w-full py-5 px-8 bg-cover bg-center bg-no-repeat rounded-b-[50px]" style={{ backgroundImage: 'url(Home_background.jpg)' }}>
             <div className="mb-20">
                 <Navbar />

@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from "react"
 import DashboardBox from "../Components/Dashboard_box"
-import Sidebar from "../Components/Area_sidebar"
+import Navbar from "../Components/Navbar"
 import Header from "../Components/Area_banner"
+import Footer from "../Components/Footer"
 import AreaPopup from "../Components/AreaPopup"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Plus } from "lucide-react"
 
 type Area = {
   id: string
@@ -79,7 +80,6 @@ export default function Dashboard() {
       console.error("Network error", err);
     }
   };
-
 
   const getUserId = async (): Promise<string | null> => {
     try {
@@ -197,11 +197,8 @@ export default function Dashboard() {
             onClick={() => setSidebarOpen(false)}
           />
         )}
-        <div className={`
-          fixed top-0 left-0 h-full z-40 transition-transform duration-300 ease-in-out
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
-        `}>
-          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <div className="mb-20">
+          <Navbar />
         </div>
         <main className="flex-1 ml-0 lg:ml-60 flex flex-col items-center justify-center min-h-96 px-4">
           <div className="text-center">
@@ -225,70 +222,108 @@ export default function Dashboard() {
   const inactiveItems = items.filter((item) => !item.isEnabled)
 
   return (
-    <div className="min-h-screen bg-[#FFFAFA] relative flex flex-col">
+    <div className="min-h-screen bg-[#FFFAFA] flex flex-col">
       <Header />
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 right-4 z-50 p-2 bg-white rounded-lg shadow-lg lg:hidden hover:bg-gray-100 transition-colors"
-        aria-label="Toggle menu"
-      >
-        {sidebarOpen ? <X size={24} className="text-[#1B264F]" /> : <Menu size={24} className="text-[#1B264F]" />}
-      </button>
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-opacity-50 z-30 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-      <div className={`
-        fixed top-0 left-0 h-full z-40 transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
-      `}>
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className="mt-8 mb-20">
+        <Navbar />
       </div>
-      <main className="flex-1 ml-0 lg:ml-60 flex flex-col p-4 md:p-6 lg:p-10 relative z-0">
-        <div className="w-full flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-10 gap-4">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black">Active Area</h2>
+      <main className="flex-1 px-8 md:px-16 lg:px-24 py-12 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+          <div className="lg:col-span-3">
+            <div className="mb-16">
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-3xl md:text-4xl font-bold text-[#1B264F]">
+                  Active Areas:
+                </h2>
+                <button
+                  onClick={() => setAreaOpen(true)}
+                  className="flex items-center gap-2 px-6 py-3 bg-[#576CA8] text-white font-semibold rounded-full hover:bg-[#4a5d91] transition-colors shadow-lg"
+                >
+                  <Plus size={20} />
+                  Create Area
+                </button>
+              </div>
 
-          <button
-            onClick={() => setAreaOpen(true)}
-            className="w-full sm:w-auto px-4 py-2 text-lg md:text-xl font-medium rounded-md bg-[#5A80F0] text-white shadow hover:bg-[#4a6cd1] transition"
-          >
-            Create Area
-          </button>
+              {activeItems.length === 0 ? (
+                <p className="text-gray-500 text-lg text-center py-12">
+                  No active areas yet. Create one to get started!
+                </p>
+              ) : (
+                activeItems.map((item) => {
+                  const [action, reaction] = item.name.split(" -> ").map(p => p.trim());
+                  return (
+                    <DashboardBox
+                      key={item.id}
+                      actionText={action}
+                      reactionText={reaction}
+                      checked={item.isEnabled}
+                      onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
+                      onDelete={() => handleDelete(item.id)}
+                      label={item.label || item.name}
+                    />
+                  );
+                })
+              )}
+            </div>
+            <div className="mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1B264F] mb-8">
+                Inactive Areas:
+              </h2>
+
+              {inactiveItems.length === 0 ? (
+                <p className="text-gray-500 text-lg text-center py-12">
+                  No inactive areas.
+                </p>
+              ) : (
+                inactiveItems.map((item) => {
+                  const [action, reaction] = item.name.split(" -> ").map(p => p.trim());
+                  return (
+                    <DashboardBox
+                      key={item.id}
+                      actionText={action}
+                      reactionText={reaction}
+                      checked={item.isEnabled}
+                      onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
+                      onDelete={() => handleDelete(item.id)}
+                      label={item.label || item.name}
+                    />
+                  );
+                })
+              )}
+            </div>
+
+          </div>
+          <div className="lg:col-span-1">
+            <div className="grid grid-cols-1 gap-6 sticky top-24">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-[#576CA8] hover:shadow-xl transition-shadow">
+                <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
+                  Total Areas
+                </p>
+                <p className="text-5xl font-bold text-[#576CA8] mt-3">
+                  {items.length}
+                </p>
+              </div>
+              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-green-500 hover:shadow-xl transition-shadow">
+                <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
+                  Active
+                </p>
+                <p className="text-5xl font-bold text-green-500 mt-3">
+                  {activeItems.length}
+                </p>
+              </div>
+              <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-orange-500 hover:shadow-xl transition-shadow">
+                <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
+                  Inactive
+                </p>
+                <p className="text-5xl font-bold text-orange-500 mt-3">
+                  {inactiveItems.length}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        {activeItems.map((item) => {
-          const [action, reaction] = item.name.split(" -> ").map((part) => part.trim());
-          return (
-            <DashboardBox
-              key={item.id}
-              actionText={action}
-              reactionText={reaction}
-              checked={item.isEnabled}
-              onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
-              onDelete={() => handleDelete(item.id)}
-              label={item.label || item.name}
-            />
-          );
-        })}
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mt-10 md:mt-16 mb-6 md:mb-10">
-          Inactive Area
-        </h2>
-        {inactiveItems.map((item) => {
-          const [action, reaction] = item.name.split(" -> ").map((part) => part.trim());
-          return (
-            <DashboardBox
-              key={item.id}
-              actionText={action}
-              reactionText={reaction}
-              checked={item.isEnabled}
-              onDelete={() => handleDelete(item.id)}
-              onCheck={(e) => handleToggleItem(item.id, e.target.checked)}
-              label={item.label || item.name}
-            />
-          );
-        })}
       </main>
+      <Footer />
       <AreaPopup
         open={areaOpen}
         onClose={() => setAreaOpen(false)}
