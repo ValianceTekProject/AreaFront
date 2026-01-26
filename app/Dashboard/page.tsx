@@ -56,7 +56,7 @@ export default function Dashboard() {
       setIsAuthenticated(true)
     } catch (err) {
       console.error("Network error", err)
-      setError("Erreur lors du chargement des zones")
+      setError("Error fetching areas")
     }
   }
 
@@ -197,10 +197,10 @@ export default function Dashboard() {
             onClick={() => setSidebarOpen(false)}
           />
         )}
-        <div className="mb-20">
+        <div className="mb-20 mt-10">
           <Navbar />
         </div>
-        <main className="flex-1 ml-0 lg:ml-60 flex flex-col items-center justify-center min-h-96 px-4">
+        <main className="flex-1 flex flex-col items-center justify-center min-h-96 px-4">
           <div className="text-center">
             <h2 className="text-xl md:text-2xl font-bold mb-4 text-red-500">Access denied</h2>
             <p className="text-sm md:text-base text-gray-600 mb-6">
@@ -214,6 +214,7 @@ export default function Dashboard() {
             </a>
           </div>
         </main>
+        <Footer />
       </div>
     )
   }
