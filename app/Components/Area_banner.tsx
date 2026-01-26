@@ -68,7 +68,7 @@ const Header = () => {
 
   return (
     <header className="w-full bg-[#1B264F] px-6 py-2 md:py-4 relative z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <img src="Area_logo.png" alt="Logo" className="h-8 w-auto" />
 
         <div className="hidden md:flex gap-3">
