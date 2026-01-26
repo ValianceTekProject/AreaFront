@@ -225,20 +225,20 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-[#FFFAFA] flex flex-col">
       <Header />
-      <div className="mt-8 mb-20">
+      <div className="sm:mt-0 sm:mb-0 md:mt-10 md:mb-10">
         <Navbar />
       </div>
-      <main className="flex-1 px-8 md:px-16 lg:px-24 py-12 w-full">
+      <main className="flex-1 px-8 md:px-16 lg:px-24 py-2 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-3">
             <div className="mb-16">
-              <div className="flex justify-between items-center mb-8">
+              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center my-8 gap-4">
                 <h2 className="text-3xl md:text-4xl font-bold text-[#1B264F]">
                   Active Areas:
                 </h2>
                 <button
                   onClick={() => setAreaOpen(true)}
-                  className="flex items-center gap-2 px-6 py-3 bg-[#576CA8] text-white font-semibold rounded-full hover:bg-[#4a5d91] transition-colors shadow-lg"
+                  className="flex items-center gap-2 px-6 py-3 bg-[#576CA8] text-white font-semibold rounded-full hover:bg-[#4a5d91] transition-colors shadow-lg self-start lg:self-auto"
                 >
                   <Plus size={20} />
                   Create Area

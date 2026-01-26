@@ -1,55 +1,81 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Header from "../Components/Area_banner"
-import Sidebar from "../Components/Area_sidebar"
-import UsersPanel from "../Components/User_panel"
-import ServicesPanel from "../Components/Service_panel"
-import { Menu, X } from "lucide-react"
+import { useState } from "react";
+import Header from "../Components/Area_banner";
+import Footer from "../Components/Footer";
+import Navbar from "../Components/Navbar";
+import UsersPanel from "../Components/User_panel";
+import ServicesPanel from "../Components/Service_panel";
+import { Menu, X, Users, Server } from "lucide-react";
 
 export default function AdminDashboard() {
-  const [tab, setTab] = useState<"users" | "services">("users")
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [tab, setTab] = useState<"users" | "services">("users");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#FFFAFA] flex flex-col">
       <Header />
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 right-4 z-50 p-2 bg-white rounded-lg shadow-lg lg:hidden hover:bg-gray-100 transition-colors"
-        aria-label="Toggle menu"
-      >
-        {sidebarOpen ? <X size={24} className="text-[#1B264F]" /> : <Menu size={24} className="text-[#1B264F]" />}
-      </button>
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-opacity-50 z-30 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-      <div className={`
-        fixed top-0 left-0 h-full z-40 transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
-      `}>
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      <div className="mt-10 flex justify-center">
+        <Navbar />
       </div>
-      <main className="ml-0 lg:ml-60 p-4 sm:p-6 md:p-8 lg:p-10 flex-1">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 md:mb-10 text-black">Admin Dashboard</h1>
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 mb-6 md:mb-10">
-          {["users", "services"].map((t) => (
+
+      <main className="flex-1 w-full flex justify-center px-6 md:px-12 lg:px-20 py-14">
+        <div className="w-full max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
             <button
-              key={t}
-              onClick={() => setTab(t as any)}
-              className={`w-full sm:w-auto px-6 py-2 rounded-md text-base sm:text-lg font-medium transition
-                ${tab === t ? "bg-[#1B264F] text-white" : "bg-[#5A80F0] text-white hover:bg-[#4a6cd1]"}`}
+              onClick={() => setTab("users")}
+              className={`p-8 rounded-2xl border-2 shadow-lg transition-all text-left
+                ${
+                  tab === "users"
+                    ? "border-[#1B264F] bg-white"
+                    : "border-gray-300 bg-gray-50 hover:border-[#576CA8]"
+                }`}
             >
-              {t.toUpperCase()}
+              <div className="flex items-center gap-4 mb-4">
+                <Users size={32} className="text-[#1B264F]" />
+                <h3 className="text-2xl font-bold text-[#1B264F]">
+                  User Management
+                </h3>
+              </div>
+              <p className="text-gray-600">
+                View users, manage roles and access rights
+              </p>
             </button>
-          ))}
+
+            <button
+              onClick={() => setTab("services")}
+              className={`p-8 rounded-2xl border-2 shadow-lg transition-all text-left
+                ${
+                  tab === "services"
+                    ? "border-[#1B264F] bg-white"
+                    : "border-gray-300 bg-gray-50 hover:border-[#576CA8]"
+                }`}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <Server size={32} className="text-[#1B264F]" />
+                <h3 className="text-2xl font-bold text-[#1B264F]">
+                  Service Control
+                </h3>
+              </div>
+              <p className="text-gray-600">
+                Monitor and manage connected integrations
+              </p>
+            </button>
+          </div>
+
+         {tab === "users" && <UsersPanel />}
+
+          {tab === "services" && (
+            <div className="bg-white rounded-3xl shadow-xl p-6 md:p-10">
+              <ServicesPanel />
+            </div>
+          )}
+
         </div>
-        {tab === "users" && <UsersPanel />}
-        {tab === "services" && <ServicesPanel />}
       </main>
+
+      <Footer />
     </div>
-  )
+  );
 }

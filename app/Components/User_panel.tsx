@@ -99,7 +99,7 @@ export default function UsersPanel() {
     return (
       <div className="bg-[#1B264F] rounded-xl shadow p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-white">Users</h2>
-        <p className="text-white/60">Aucun utilisateur trouvé</p>
+        <p className="text-white/60">No users found</p>
       </div>
     )
   }
@@ -121,7 +121,7 @@ export default function UsersPanel() {
               <tr key={u.id} className="border-b border-white/10 last:border-0">
                 <td className="py-4">{u.email}</td>
                 <td>
-                  <span
+                  <button
                     onClick={() => changeAuthorizationStatus(u.id, !u.authorized)}
                     className={`px-3 py-1 rounded-full text-sm font-medium cursor-pointer
                     ${
@@ -131,7 +131,7 @@ export default function UsersPanel() {
                     }`}
                   >
                     {u.authorized ? "AUTHORIZED" : "UNAUTHORIZED"}
-                  </span>
+                  </button>
                 </td>
                 <td>
                   <span
