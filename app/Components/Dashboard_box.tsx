@@ -42,18 +42,12 @@ export default function DashboardBox({
             <p className="text-lg text-[#576CA8] font-medium">
               {formatText(actionText)}
             </p>
-            <p className="text-sm text-[#576CA8] mt-1 opacity-75">
-              Description de l'action
-            </p>
           </div>
 
           <div className="flex-1">
             <p className="font-bold text-xl text-[#1B264F] mb-2">Reaction:</p>
             <p className="text-lg text-[#576CA8] font-medium">
               {formatText(reactionText)}
-            </p>
-            <p className="text-sm text-[#576CA8] mt-1 opacity-75">
-              Description de l'action
             </p>
           </div>
         </div>

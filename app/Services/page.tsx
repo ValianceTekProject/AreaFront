@@ -1,9 +1,9 @@
 "use client";
 
-import Sidebar from "../Components/Area_sidebar";
 import Header from "../Components/Area_banner";
+import Footer from "../Components/Footer";
+import Navbar from "../Components/Navbar";
 import React, { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
 
 import GoogleIcon from '../Components/Google_Icon';
 import DiscordIcon from '../Components/Discord_Icon';
@@ -13,7 +13,6 @@ export default function ServicesPage() {
   const [userId, setUserId] = React.useState<string | null>(null);
   const [servicesStatus, setServicesStatus] = React.useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const availableServices = [
     { name: "Google", icon: <GoogleIcon />, url: "http://localhost:8080/auth/google/login", id: 1 },
@@ -99,66 +98,74 @@ export default function ServicesPage() {
     return servicesStatus.some(service => service.serviceId === serviceId);
   };
 
-  const getServiceInfo = (serviceId: number) => {
-    return servicesStatus.find(service => service.serviceId === serviceId);
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col">
+        <Header />
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center">
+          <p className="text-xl text-gray-600">Loading...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#FFFAFA] relative flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       <Header />
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 right-4 z-50 p-2 bg-white rounded-lg shadow-lg lg:hidden hover:bg-gray-100 transition-colors"
-        aria-label="Toggle menu"
-      >
-        {sidebarOpen ? <X size={24} className="text-[#1B264F]" /> : <Menu size={24} className="text-[#1B264F]" />}
-      </button>
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-opacity-50 z-30 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-      <div className={`
-        fixed top-0 left-0 h-full z-40 transition-transform duration-300 ease-in-out
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
-      `}>
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      </div>
-      <main className="flex-1 ml-0 lg:ml-60 px-4 sm:px-6 md:px-10 lg:px-16 py-6 md:py-10 flex flex-col lg:flex-row justify-center items-start gap-8 lg:gap-12">
-        <div className="flex flex-col w-full lg:w-2/3">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-black">Services</h1>
-          <div className="mt-8 sm:mt-12 lg:mt-16 flex flex-col gap-4 sm:gap-6 lg:gap-15 w-full">
-            {availableServices.map((s) => (
-              <button
-                key={s.name}
-                onClick={() => handleOAuthLogin(s.url)}
-                className="flex items-center gap-3 px-4 py-4 sm:py-5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer w-full"
-              >
-                <div className="text-xl sm:text-2xl">{s.icon}</div>
-                <div className="text-sm sm:text-base font-medium text-black">Connect with {s.name}</div>
-              </button>
-            ))}
-          </div>
+      <div className="w-full py-5 px-8 bg-cover bg-center bg-no-repeat rounded-b-[50px]" style={{ backgroundImage: 'url(Home_background.jpg)' }}>
+        <div className="mb-20">
+          <Navbar />
         </div>
-        <div className="w-full lg:w-[700px] lg:mt-25">
-          <div className="border border-black rounded-xl p-6 sm:p-8 bg-white shadow-sm">
-            <h2 className="text-xl sm:text-2xl text-black font-semibold text-center">
-              Connection Summary Panel
-            </h2>
-            <div className="mt-6 sm:mt-8 flex flex-col gap-4 sm:gap-6">
-              {availableServices.map((service) => (
-                <div key={service.id} className="flex items-center gap-3 sm:gap-4">
-                  <div className="text-lg sm:text-xl">{service.icon}</div>
-                  <span className="text-black text-base sm:text-lg">
-                    {isServiceConnected(service.id) ? "Connected" : "Not Connected"}
-                  </span>
-                </div>
-              ))}
+        <div className="max-w-4xl mx-auto text-center mb-25">
+          <h1 className="text-white text-4xl font-bold">
+            Connect your services to unlock new possibilities
+          </h1>
+        </div>
+      </div>
+
+      <main className="flex-1 w-full px-4 sm:px-6 md:px-10 lg:px-16 py-12 md:py-16">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-20">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1B264F] text-center mb-12">Available Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {availableServices.map((service) => {
+                const isConnected = isServiceConnected(service.id);
+                return (
+                  <div
+                    key={service.id}
+                    className={`rounded-2xl p-8 flex flex-col items-center justify-center min-h-[320px] transition-all shadow-lg hover:shadow-xl ${
+                      isConnected
+                        ? "bg-gradient-to-br from-blue-100 to-blue-50 border-2 border-[#1B264F]"
+                        : "bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-300 hover:border-blue-300"
+                    }`}
+                  >
+                    <div className="text-6xl mb-6">{service.icon}</div>
+                    <h3 className="text-2xl font-bold text-[#1B264F] mb-2">{service.name}</h3>
+                    <div className={`h-1 w-12 rounded-full mb-6 ${isConnected ? "bg-[#1B264F]" : "bg-gray-300"}`}></div>
+                    <p className="text-lg font-semibold text-[#576CA8] mb-8">
+                      {isConnected ? "✓ Connected" : "Not Connected"}
+                    </p>
+                    <button
+                      onClick={() => handleOAuthLogin(service.url)}
+                      className={`px-8 py-3 rounded-lg font-medium transition-all ${
+                        isConnected
+                          ? "bg-[#4a5d91] text-white hover:bg-[#1B264F]"
+                          : "bg-[#576CA8] text-white hover:bg-[#4a5d91]"
+                      }`}
+                    >
+                      {isConnected ? "Reconnect" : `Connect with ${service.name}`}
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }
