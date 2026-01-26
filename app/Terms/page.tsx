@@ -1,4 +1,6 @@
- import React from 'react';
+"use client"
+
+import React from 'react';
 import Header from '../Components/Area_banner';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
